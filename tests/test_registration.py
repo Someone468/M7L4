@@ -36,11 +36,22 @@ def test_add_new_user(setup_database, connection):
     user = cursor.fetchone()
     assert user, "Пользователь должен быть добавлен в базу данных."
 
-def test_add_existing_user(setup_database, connection):
-    """"""
+def test_successful_authentication():
+    """Тест успешной аутентификации пользователя."""
     add_user('testuser', 'testuser@example.com', 'password123')
-    result = add_user('testuser', 'testuser@example.com', 'password123')
-    assert result ==
+    authenticate = authenticate_user('testuser', 'password123')
+    assert authenticate, "Должна произойти успешная аутенфикация"
+
+def test_authenticate_nonexistent_user():
+    """Тест аутентификации несуществующего пользователя."""
+    authenticate = authenticate_user('testuser3', 'password123')
+    assert not authenticate, "Должна произойти НЕуспешная аутенфикация"
+
+def test_authenticate_user_with_wrong_password():
+    """Тест аутентификации пользователя с неправильным паролем."""
+    add_user('testuser', 'testuser@example.com', 'password123')
+    authenticate = authenticate_user('testuser', 'password234')
+    assert not authenticate, "Должна произойти НЕуспешная аутенфикация"
 
 # Возможные варианты тестов:
 """
